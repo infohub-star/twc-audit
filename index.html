@@ -101,6 +101,24 @@ h1 span{display:block;color:var(--gold-dark);font-style:italic}
 .btn:hover{background:var(--navy)}
 @media (max-width:640px){.result{grid-template-columns:1fr}}
 
+
+/* Diagnosis */
+.gaps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.gap{background:#fff;border:1px solid var(--champ-line);border-radius:8px;padding:10px 12px}
+.gap.top{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
+.gap-n{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.gap.top .gap-n{color:var(--gold-dark)}
+.gap-v{font-weight:700;font-size:15px;margin-top:2px}
+.gap-t{height:5px;background:var(--soft);border-radius:99px;margin-top:6px;overflow:hidden}
+.gap-f{height:100%;background:var(--gold);border-radius:99px;transition:width .3s}
+.steps{margin-top:18px}
+.slabel{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:6px}
+.steps ol{margin:0;padding-left:20px}
+.steps li{margin:6px 0;font-size:15.5px}
+.steps li b{font-weight:700}
+.steps li span{color:var(--muted);font-size:14px}
+@media (max-width:640px){.gaps{grid-template-columns:repeat(2,1fr)}}
+
 /* Sticky score */
 .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(14,26,43,.06);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));z-index:5}
 .bar-in{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:16px}
@@ -157,14 +175,16 @@ h1 span{display:block;color:var(--gold-dark);font-style:italic}
       <div class="rscore" id="rScore"></div>
       <h2 id="rTitle"></h2>
       <p id="rText"></p>
+      <div class="gaps" id="rGaps"></div>
+      <div class="steps" id="rStepsWrap"><div class="slabel">Start here this week</div><ol id="rSteps"></ol></div>
       <div class="offer">
-        <h3>Ticked 3 or more? Let's fix them with your teams.</h3>
-        <p>Get a free 30-minute Claude Workflow Audit. We'll identify one repetitive team task and show you how to reduce the time it takes.</p>
-        <p class="leave"><b>You leave with</b> 1 mapped workflow · 1 reusable prompt · 1 Claude Project structure</p>
+        <h3 id="rOfferH"></h3>
+        <p id="rOfferP"></p>
+        <p class="leave"><b>You leave with</b> <span id="rLeave"></span></p>
         <p class="small">Result varies by task and starting process. Bring one real workflow; leave with a practical next step.</p>
       </div>
     </div>
-    <a class="btn" id="rBtn" href="https://thinkwithclaude.com" target="_blank" rel="noopener">Book your free workflow audit</a>
+    <a class="btn" id="rBtn" href="#">Book your free workflow audit</a>
   </section>
 
   <footer class="foot">
@@ -182,21 +202,61 @@ h1 span{display:block;color:var(--gold-dark);font-style:italic}
 </div>
 
 <script>
-/* ---- Change this to your booking link (Calendly, WhatsApp, etc.) ---- */
-var BOOKING_URL = "mailto:infohub@connectwithshantanu.com?subject=Free%20Claude%20Workflow%20Audit&body=Hi%20Shantanu%2C%20I%27d%20like%20to%20book%20the%20free%2030-minute%20Claude%20Workflow%20Audit.";
+/* ---- Booking link: swap in your Calendly URL here ---- */
+var BOOKING_URL = "mailto:infohub@connectwithshantanu.com";
 
 var ITEMS = [
-  ["People only use it for emails","Pick one weekly task per team",true],
-  ["They type one-line questions","Say who it's for, what you need, and what format",false],
-  ["They're scared to upload files","Share 5 simple upload rules",false],
-  ["They explain the same task every week","Save it once in a Claude Project",true],
-  ["Answers come in the wrong format","Show one example of what you want",false],
-  ["Excel files confuse it","Name the sheet and columns to use",false],
-  ["Nobody checks the answers","Check 2–3 numbers before sharing",false],
-  ["Good setups stay with one person","Share the Project with the team",true],
-  ["No one owns AI in the team","Name one AI champion per team",false],
-  ["Leadership can't see the value","Track time before vs. after",false]
+  ["People only use it for emails","Pick one weekly task per team",true,"lead"],
+  ["They type one-line questions","Say who it's for, what you need, and what format",false,"prompt"],
+  ["They're scared to upload files","Share 5 simple upload rules",false,"files"],
+  ["They explain the same task every week","Save it once in a Claude Project",true,"reuse"],
+  ["Answers come in the wrong format","Show one example of what you want",false,"prompt"],
+  ["Excel files confuse it","Name the sheet and columns to use",false,"files"],
+  ["Nobody checks the answers","Check 2–3 numbers before sharing",false,"lead"],
+  ["Good setups stay with one person","Share the Project with the team",true,"reuse"],
+  ["No one owns AI in the team","Name one AI champion per team",false,"lead"],
+  ["Leadership can't see the value","Track time before vs. after",false,"lead"]
 ];
+
+var CATS = {
+  prompt:{name:"Prompting",
+    title:"Your team knows Claude exists, but not how to brief it.",
+    text:"Answers feel generic because the ask is generic. This is a prompting gap, and it's the fastest one to close.",
+    offerH:"Free audit: fix how your team briefs Claude",
+    offerP:"We take one real task and rebuild the prompt live using the RACT framework (Role, Ask, Context, Tone).",
+    leave:"1 before/after prompt · 1 RACT template for your team · 1 output format guide",
+    btn:"Book a prompting audit"},
+  files:{name:"Files & data",
+    title:"Your real work lives in files, and Claude never sees it.",
+    text:"If people won't upload, or Excel confuses it, Claude stays a chat toy. The fix is a few simple rules, not more licences.",
+    offerH:"Free audit: get Claude working on your own files",
+    offerP:"We take one real report or spreadsheet and show how to upload it safely, point Claude at the right data, and check the output.",
+    leave:"1 file workflow · 5 upload rules for your team · 1 Excel prompt template",
+    btn:"Book a files audit"},
+  reuse:{name:"Reuse",
+    title:"Your team rebuilds the same work from scratch every week.",
+    text:"Good setups exist, but they live in one person's head. Claude Projects turn them into something the whole team reuses.",
+    offerH:"Free audit: build your first shared Claude Project",
+    offerP:"We pick one weekly task and set it up once as a Project your whole team can reuse.",
+    leave:"1 Claude Project structure · 1 saved instruction set · 1 sharing plan",
+    btn:"Book a Projects audit"},
+  lead:{name:"Ownership",
+    title:"Claude is in the building, but nobody is steering it.",
+    text:"Without an owner, a quality check, and a before/after number, usage stays at emails and leadership stays unconvinced.",
+    offerH:"Free audit: set up ownership and prove the ROI",
+    offerP:"We map who owns AI in each team, set a simple review habit, and pick one task to measure before vs. after.",
+    leave:"1 AI champion plan · 1 review checklist · 1 time-saved tracker",
+    btn:"Book a rollout audit"}
+};
+var ORDER = ["reuse","prompt","files","lead"];
+var SPREAD = {
+  title:"The gaps are everywhere, so this isn't one team's problem.",
+  offerH:"Free audit: plan a company-wide fix",
+  offerP:"We map your gaps across teams and plan a hands-on workshop where every team fixes its own workflows, on its own files, in one day.",
+  leave:"1 gap map across teams · 1 workshop plan · 1 quick win to start Monday",
+  btn:"Book a workshop audit"
+};
+
 var tick = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 var list = document.getElementById("list");
 list.innerHTML = ITEMS.map(function(it,i){
@@ -218,26 +278,97 @@ list.addEventListener("click", function(e){
   render();
 });
 
+function $(id){ return document.getElementById(id); }
+
 function render(){
   var rows = list.querySelectorAll(".row"), n = 0;
   rows.forEach(function(r,i){ r.setAttribute("aria-pressed", String(state[i])); if(state[i]) n++; });
-  document.getElementById("count").textContent = n;
-  var m = document.getElementById("meter"); m.style.width = (n*10)+"%";
-  var t, x, l, color;
-  if (n===0){ t="Tap the problems you see above."; x="Be honest. Think about the whole company, not just your best team."; l="Tap the problems you see"; color="var(--gold)"; }
-  else if (n<=2){ t="You're on the right track."; x="Fix these "+n+" and your teams will feel the difference within a month."; l="On track"; color="var(--gold)"; }
-  else if (n<=6){ t="Your teams are losing hours every week."; x="You ticked "+n+" of 10. Your licence is working for a few people. Let's make it work for every team."; l="Losing time every week"; color="#C0822F"; }
-  else { t="Most of your Claude licence is going unused."; x="You ticked "+n+" of 10. A hands-on workshop can fix most of these in one day, with every team working on its own files."; l="Most of the licence unused"; color="var(--maroon)"; }
-  m.style.background = color;
-  document.getElementById("rTitle").textContent = t;
-  document.getElementById("rText").textContent = x;
-  document.getElementById("meterL").textContent = l;
-  document.getElementById("rScore").textContent = "Your score: " + n + " / 10";
+  $("count").textContent = n;
+  $("rScore").textContent = "Your score: " + n + " / 10";
+
+  // Score each area
+  var stats = {};
+  ORDER.forEach(function(k){ stats[k] = {hit:0,total:0}; });
+  ITEMS.forEach(function(it,i){ stats[it[3]].total++; if(state[i]) stats[it[3]].hit++; });
+  var ranked = ORDER.slice().sort(function(a,b){
+    var ra = stats[a].hit/stats[a].total, rb = stats[b].hit/stats[b].total;
+    if (rb !== ra) return rb - ra;
+    return stats[b].hit - stats[a].hit;
+  });
+  var top = ranked[0];
+  var areasHit = ORDER.filter(function(k){ return stats[k].hit > 0; }).length;
+  var spread = n >= 6 && areasHit >= 3;
+  var P = spread ? SPREAD : CATS[top];
+
+  // Gap bars
+  $("rGaps").innerHTML = ORDER.map(function(k){
+    var s = stats[k], pct = Math.round(s.hit/s.total*100);
+    return '<div class="gap'+(n && k===top && !spread ? ' top':'')+'"><div class="gap-n">'+CATS[k].name+'</div>'+
+      '<div class="gap-v">'+s.hit+' / '+s.total+'</div><div class="gap-t"><div class="gap-f" style="width:'+pct+'%"></div></div></div>';
+  }).join("");
+
+  // Top 3 fixes: biggest area first, then "most common", then the rest
+  var ticked = ITEMS.map(function(it,i){ return i; }).filter(function(i){ return state[i]; });
+  ticked.sort(function(a,b){
+    var w = spread ? 0 : 2;
+    var sa = (ITEMS[a][3]===top?w:0) + (ITEMS[a][2]?1:0);
+    var sb = (ITEMS[b][3]===top?w:0) + (ITEMS[b][2]?1:0);
+    return sb - sa || a - b;
+  });
+  $("rSteps").innerHTML = ticked.slice(0,3).map(function(i){
+    return '<li><b>'+ITEMS[i][1]+'</b> <span>(fixes: '+ITEMS[i][0].toLowerCase()+')</span></li>';
+  }).join("");
+  $("rStepsWrap").style.display = n ? "" : "none";
+  $("rGaps").style.display = n ? "" : "none";
+
+  // Headline, text, meter
+  var t, x, l, color, m = $("meter");
+  if (n===0){
+    t="Tap the problems you see above.";
+    x="Be honest. Think about the whole company, not just your best team.";
+    l="Tap the problems you see"; color="var(--gold)";
+    P = {offerH:"Ticked 3 or more? Let's fix them with your teams.",
+         offerP:"Get a free 30-minute Claude Workflow Audit. We'll pick one repetitive team task and show you how to cut the time it takes.",
+         leave:"1 mapped workflow · 1 reusable prompt · 1 Claude Project structure",
+         btn:"Book your free workflow audit"};
+  } else if (spread){
+    t=SPREAD.title;
+    x="You ticked problems in "+areasHit+" of 4 areas. Fixing them one team at a time takes months; a hands-on workshop fixes most of them in a day.";
+    l = n>=9 ? "Most of the licence unused" : "Gaps across teams";
+    color="var(--maroon)";
+  } else if (n<=2 && stats[top].hit < stats[top].total){
+    t="You're ahead of most teams.";
+    x="Your one gap is "+CATS[top].name.toLowerCase()+". "+CATS[top].text;
+    l="Small gaps · "+CATS[top].name; color="var(--gold)";
+  } else {
+    t=CATS[top].title;
+    x=CATS[top].text;
+    l="Biggest gap: "+CATS[top].name; color="#C0822F";
+  }
+  m.style.width = (n*10)+"%"; m.style.background = color;
+  $("rTitle").textContent = t;
+  $("rText").textContent = x;
+  $("meterL").textContent = l;
+  $("rOfferH").textContent = P.offerH;
+  $("rOfferP").textContent = P.offerP;
+  $("rLeave").textContent = P.leave;
+  $("rBtn").textContent = P.btn;
+
+  // Booking link carries their answers
+  var href = BOOKING_URL;
+  if (BOOKING_URL.indexOf("mailto:") === 0){
+    var body = "Hi Shantanu,\n\nI'd like to book the free 30-minute Claude Workflow Audit.\n\n" +
+      (n ? "My score: "+n+"/10\nBiggest gap: "+(spread?"Across teams":CATS[top].name)+"\nProblems we see:\n- " +
+        ticked.map(function(i){return ITEMS[i][0];}).join("\n- ") : "");
+    href += "?subject=" + encodeURIComponent("Free Claude Workflow Audit – " + (n ? (spread?"Across teams":CATS[top].name) : "Enquiry")) +
+            "&body=" + encodeURIComponent(body);
+  }
+  ["rBtn","barBtn"].forEach(function(id){
+    var a = $(id); a.href = href;
+    if (href.indexOf("http") === 0){ a.target="_blank"; a.rel="noopener"; }
+    else { a.removeAttribute("target"); a.removeAttribute("rel"); }
+  });
 }
-["rBtn","barBtn"].forEach(function(id){
-  var a = document.getElementById(id); a.href = BOOKING_URL;
-  if (BOOKING_URL.indexOf("http") !== 0) { a.removeAttribute("target"); a.removeAttribute("rel"); }
-});
 render();
 </script>
 </body>
