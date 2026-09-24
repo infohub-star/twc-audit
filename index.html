@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your team has Claude. Why isn't it saving time? | thinkwithclaude</title>
+<meta name="description" content="A 60-second check: tick the problems you see in your company and get a one-line fix for each.">
+<meta property="og:title" content="Your team has Claude. Why isn't it saving time?">
+<meta property="og:description" content="Tick the problems you see in your company. Each one has a one-line fix. Takes 60 seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ink:#0E1A2B; --navy:#1B2B44; --muted:#5B6576; --line:#E3E6EB; --soft:#F2F4F7;
+  --gold:#C9A25A; --gold-dark:#8C6A2F; --champ:#F6F0E4; --champ-line:#E6D9BD; --fixbg:#F4EDDF;
+  --maroon:#7A2E2E; --bg:#FBFAF7;
+  --serif:"Noto Sans",system-ui,Arial,sans-serif; --body:"Noto Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding:0 16px 140px}
+.wrap{max-width:900px;margin:0 auto}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 0 0;flex-wrap:wrap}
+.brand{font-family:var(--body);font-weight:700;font-size:18px;text-decoration:none}
+.brand span{color:var(--gold)}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+h1{font-family:var(--serif);font-weight:800;font-size:clamp(32px,6vw,52px);line-height:1.06;letter-spacing:-.01em;margin:28px 0 0;text-wrap:balance}
+h1 span{display:block;color:var(--gold-dark);font-style:italic}
+
+/* Case study */
+.case{margin-top:24px;background:var(--champ);border:1px solid var(--champ-line);border-top:4px solid var(--gold);border-radius:10px;display:grid;grid-template-columns:1.25fr auto 1.2fr;align-items:stretch;overflow:hidden}
+.case > div{padding:20px 22px}
+.case-l,.case-m{border-right:1px solid var(--champ-line)}
+.clabel{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark)}
+.big{font-family:var(--serif);font-weight:800;font-size:clamp(26px,3.2vw,30px);white-space:nowrap;line-height:1.1;color:var(--gold-dark);margin:8px 0 6px}
+.big .was{color:var(--ink)}
+.big i{font-size:.5em;color:var(--muted);font-weight:600}
+.case-l p{margin:0;font-size:15px}
+.case-m{display:flex;align-items:center;justify-content:center}
+.donut{width:140px;height:140px;display:block}
+.donut .ring-gold{transition:stroke-dasharray 1.2s ease .3s}
+.dn{font-family:var(--serif);font-weight:800;font-size:8.6px;fill:var(--ink)}
+.dl{font-family:var(--mono);font-size:2.6px;letter-spacing:.3px;fill:var(--muted)}
+.case-r{display:flex;flex-direction:column;justify-content:center;gap:8px}
+.leg{display:flex;align-items:center;gap:10px;font-size:15px}
+.leg b{font-weight:700}
+.sub2{margin:0;color:var(--muted);font-size:14px}
+.sw{width:14px;height:14px;border-radius:3px;flex:none}
+.sw.o{border:2px solid var(--navy)} .sw.g{background:var(--gold)} .sw.n{background:var(--navy)}
+.punch{margin:6px 0 0;font-weight:700;font-size:17px}
+@media (max-width:760px){
+  .case{grid-template-columns:1fr}
+  .case-l,.case-m{border-right:0;border-bottom:1px solid var(--champ-line)}
+}
+
+/* Checklist */
+.how b{font-weight:700}
+.how{display:flex;align-items:center;gap:12px;margin:34px 0 12px;font-size:17px}
+.how .box{flex:none}
+.cols{display:grid;grid-template-columns:44px 36px 1fr 40px 1fr;padding:0 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.cols .p{grid-column:3;color:var(--maroon)} .cols .f{grid-column:5;color:var(--gold-dark);padding-left:16px}
+.list{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:44px 36px 1fr 40px 1fr;align-items:stretch;background:var(--soft);border:1.5px solid transparent;border-radius:9px;overflow:hidden;cursor:pointer;text-align:left;font:inherit;color:inherit;padding:0;width:100%;transition:border-color .2s,background .2s}
+.row:hover{border-color:var(--champ-line)}
+.row > span{display:flex;align-items:center}
+.cb{justify-content:center}
+.box{width:22px;height:22px;border:2px solid var(--ink);border-radius:5px;background:#fff;display:inline-flex;align-items:center;justify-content:center;transition:background .15s}
+.box svg{width:14px;height:14px;opacity:0;transition:opacity .15s}
+.row[aria-pressed="true"]{border-color:var(--gold);background:#FFFDF8}
+.row[aria-pressed="true"] .box{background:var(--ink)}
+.row[aria-pressed="true"] .box svg{opacity:1}
+.num{font-family:var(--serif);font-weight:700;font-size:19px;color:var(--gold)}
+.prob{font-weight:700;font-size:16.5px;line-height:1.3;padding:14px 0;flex-wrap:wrap;gap:6px}
+.prob em{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--maroon);color:#fff;border-radius:3px;padding:2px 7px;font-weight:500}
+.arrow{justify-content:center;color:var(--muted);font-size:20px}
+.fix{background:var(--fixbg);border-left:3px solid var(--gold);padding:12px 16px;font-weight:600;color:var(--gold-dark);font-size:15.5px;line-height:1.35}
+@media (max-width:640px){
+  .cols{display:none}
+  .row{grid-template-columns:40px 30px 1fr}
+  .row > .arrow{display:none}
+  .fix{grid-column:1 / -1;border-left:0;border-top:1px solid var(--champ-line)}
+  .fix:before{content:"Fix: ";color:var(--muted);font-weight:500;margin-right:4px}
+}
+
+/* Result */
+.result{margin-top:28px;background:var(--champ);border:1.5px solid var(--gold);border-radius:10px;padding:24px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+.result h2{font-family:var(--serif);font-size:clamp(22px,3.4vw,30px);margin:0;line-height:1.15;text-wrap:balance}
+.result p{margin:8px 0 0;color:var(--muted)}
+.rscore{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:6px}
+.offer{margin-top:18px;padding-top:16px;border-top:1px solid var(--champ-line)}
+.offer h3{margin:0;font-size:19px;font-weight:700}
+.leave{font-size:14.5px;color:var(--ink)!important}
+.leave b{color:var(--maroon);text-transform:uppercase;font-size:12px;letter-spacing:.08em;margin-right:6px}
+.small{font-size:13px}
+.btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;font-weight:700;padding:14px 20px;border-radius:8px;white-space:nowrap}
+.btn:hover{background:var(--navy)}
+@media (max-width:640px){.result{grid-template-columns:1fr}}
+
+/* Sticky score */
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(14,26,43,.06);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));z-index:5}
+.bar-in{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:16px}
+.score{font-family:var(--serif);font-weight:700;font-size:28px;line-height:1;white-space:nowrap}
+.score small{font-size:15px;color:var(--muted)}
+.meter{flex:1;min-width:60px}
+.meter-t{height:8px;border-radius:99px;background:var(--soft);overflow:hidden}
+.meter-f{height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .3s ease,background .3s}
+.meter-l{font-size:13.5px;color:var(--muted);margin-top:5px}
+.bar .btn{padding:11px 16px;font-size:15px}
+@media (max-width:520px){.bar .btn{display:none}}
+
+.foot{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="https://thinkwithclaude.com">think<span>with</span>claude</a>
+    <span class="tag">Claude Enterprise · Quick check</span>
+  </header>
+
+  <h1>Your team has Claude. <span>Why isn't it saving time?</span></h1>
+
+  <section class="case" aria-label="Real case">
+    <div class="case-l">
+      <div class="clabel">Documented workflow result · Mid-size team</div>
+      <div class="big"><span class="was">8 hrs</span> <i>down to</i> 20 min</div>
+      <p>One leadership task → 20 minutes.</p>
+    </div>
+    <div class="case-m">
+      <svg viewBox="0 0 42 42" class="donut" role="img" aria-label="20 minutes is about 4% of 8 hours, so 96% of the time was saved">
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#1B2B44" stroke-width="6.5"/>
+        <circle class="ring-gold" id="ringGold" cx="21" cy="21" r="15.9155" fill="none" stroke="#C9A25A" stroke-width="6.5" stroke-dasharray="4.2 95.8" stroke-dashoffset="25"/>
+        <text x="21" y="21.2" text-anchor="middle" class="dn">96%</text>
+        <text x="21" y="26.3" text-anchor="middle" class="dl">TIME SAVED</text>
+      </svg>
+    </div>
+    <div class="case-r">
+      <div class="leg"><span class="sw o"></span>Before: <b>8 hrs</b> · Now: <b>20 min</b></div>
+      <div class="leg"><span class="sw g"></span>Time saved: <b>7 hrs 40 min</b></div>
+      <p class="punch">Same licence. Better workflow.</p>
+      <p class="sub2">Most teams still start from scratch every week.</p>
+    </div>
+  </section>
+
+  <div class="how"><span class="box" aria-hidden="true"></span><span><b>Tap what you see in your company.</b> Each problem has a one-line fix.</span></div>
+  <div class="cols" aria-hidden="true"><span class="p">The problem</span><span class="f">The fix</span></div>
+  <div class="list" id="list"></div>
+
+  <section class="result" id="result" aria-live="polite">
+    <div>
+      <div class="rscore" id="rScore"></div>
+      <h2 id="rTitle"></h2>
+      <p id="rText"></p>
+      <div class="offer">
+        <h3>Ticked 3 or more? Let's fix them with your teams.</h3>
+        <p>Get a free 30-minute Claude Workflow Audit. We'll identify one repetitive team task and show you how to reduce the time it takes.</p>
+        <p class="leave"><b>You leave with</b> 1 mapped workflow · 1 reusable prompt · 1 Claude Project structure</p>
+        <p class="small">Result varies by task and starting process. Bring one real workflow; leave with a practical next step.</p>
+      </div>
+    </div>
+    <a class="btn" id="rBtn" href="https://thinkwithclaude.com" target="_blank" rel="noopener">Book your free workflow audit</a>
+  </section>
+
+  <footer class="foot">
+    <span>Based on hands-on AI workshops with corporate teams</span>
+    <span>thinkwithclaude.com</span>
+  </footer>
+</div>
+
+<div class="bar" role="region" aria-label="Your score">
+  <div class="bar-in">
+    <div class="score"><span id="count">0</span><small> / 10</small></div>
+    <div class="meter"><div class="meter-t"><div class="meter-f" id="meter"></div></div><div class="meter-l" id="meterL">Tap the problems you see</div></div>
+    <a class="btn" id="barBtn" href="https://thinkwithclaude.com" target="_blank" rel="noopener">Book free audit</a>
+  </div>
+</div>
+
+<script>
+/* ---- Change this to your booking link (Calendly, WhatsApp, etc.) ---- */
+var BOOKING_URL = "mailto:infohub@connectwithshantanu.com?subject=Free%20Claude%20Workflow%20Audit&body=Hi%20Shantanu%2C%20I%27d%20like%20to%20book%20the%20free%2030-minute%20Claude%20Workflow%20Audit.";
+
+var ITEMS = [
+  ["People only use it for emails","Pick one weekly task per team",true],
+  ["They type one-line questions","Say who it's for, what you need, and what format",false],
+  ["They're scared to upload files","Share 5 simple upload rules",false],
+  ["They explain the same task every week","Save it once in a Claude Project",true],
+  ["Answers come in the wrong format","Show one example of what you want",false],
+  ["Excel files confuse it","Name the sheet and columns to use",false],
+  ["Nobody checks the answers","Check 2–3 numbers before sharing",false],
+  ["Good setups stay with one person","Share the Project with the team",true],
+  ["No one owns AI in the team","Name one AI champion per team",false],
+  ["Leadership can't see the value","Track time before vs. after",false]
+];
+var tick = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var list = document.getElementById("list");
+list.innerHTML = ITEMS.map(function(it,i){
+  return '<button type="button" class="row" aria-pressed="false" data-i="'+i+'">'+
+    '<span class="cb"><span class="box">'+tick+'</span></span>'+
+    '<span class="num">'+String(i+1).padStart(2,"0")+'</span>'+
+    '<span class="prob">'+it[0]+(it[2]?' <em>Most common</em>':'')+'</span>'+
+    '<span class="arrow" aria-hidden="true">→</span>'+
+    '<span class="fix">'+it[1]+'</span></button>';
+}).join("");
+
+var state = ITEMS.map(function(){return false;});
+try { var saved = JSON.parse(localStorage.getItem("twc-check")||"null"); if (Array.isArray(saved) && saved.length===ITEMS.length) state = saved; } catch(e){}
+
+list.addEventListener("click", function(e){
+  var b = e.target.closest(".row"); if(!b) return;
+  var i = +b.getAttribute("data-i"); state[i] = !state[i];
+  try { localStorage.setItem("twc-check", JSON.stringify(state)); } catch(e){}
+  render();
+});
+
+function render(){
+  var rows = list.querySelectorAll(".row"), n = 0;
+  rows.forEach(function(r,i){ r.setAttribute("aria-pressed", String(state[i])); if(state[i]) n++; });
+  document.getElementById("count").textContent = n;
+  var m = document.getElementById("meter"); m.style.width = (n*10)+"%";
+  var t, x, l, color;
+  if (n===0){ t="Tap the problems you see above."; x="Be honest. Think about the whole company, not just your best team."; l="Tap the problems you see"; color="var(--gold)"; }
+  else if (n<=2){ t="You're on the right track."; x="Fix these "+n+" and your teams will feel the difference within a month."; l="On track"; color="var(--gold)"; }
+  else if (n<=6){ t="Your teams are losing hours every week."; x="You ticked "+n+" of 10. Your licence is working for a few people. Let's make it work for every team."; l="Losing time every week"; color="#C0822F"; }
+  else { t="Most of your Claude licence is going unused."; x="You ticked "+n+" of 10. A hands-on workshop can fix most of these in one day, with every team working on its own files."; l="Most of the licence unused"; color="var(--maroon)"; }
+  m.style.background = color;
+  document.getElementById("rTitle").textContent = t;
+  document.getElementById("rText").textContent = x;
+  document.getElementById("meterL").textContent = l;
+  document.getElementById("rScore").textContent = "Your score: " + n + " / 10";
+}
+["rBtn","barBtn"].forEach(function(id){
+  var a = document.getElementById(id); a.href = BOOKING_URL;
+  if (BOOKING_URL.indexOf("http") !== 0) { a.removeAttribute("target"); a.removeAttribute("rel"); }
+});
+render();
+</script>
+</body>
+</html>
